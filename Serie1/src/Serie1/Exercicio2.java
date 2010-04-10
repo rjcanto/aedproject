@@ -2,19 +2,29 @@ package Serie1;
 
 public class Exercicio2 {
 	
+	static int read=0;
+	static int write=0;
+	
 	public static int FindCommonElements(int[] a1, int[] a2){
 		int count = 0;
 		
 		if(a1.length == 0 || a2.length == 0)
 			return -1;
 		
-		for(int i=0; i< a1.length-1; ++i){
-			if(a1[i] != a1[i+1])
+		for(int i=0; i< a1.length-1; ++i){	
+			read +=2;
+			if(a1[i] != a1[i+1]){
+				++read; 
 				count += ArrayUtils.CountBinarySearch(a2, a1[i]);
+			}
 		}
-		if(a1[a1.length-1]==a1[a1.length-2])
+		read+=2;
+		if(a1[a1.length-1]==a1[a1.length-2]){
+			++read;
 			count += ArrayUtils.CountBinarySearch(a2, a1[a1.length-1]);
-		
+		}
+		read+=ArrayUtils.read;
+		System.out.println("leituras: " + read+ ", escritas: "+write);
 		return count;
 	}
 	
@@ -33,7 +43,7 @@ public class Exercicio2 {
 		int [] a5 = {};
 		int [] a6 = {1,1,1,1,1,1,1,1,1};
 		
-		int retorno = numberOfDistinctElementsOccuringOnBothSortedArrays(a6, a1);
+		int retorno = numberOfDistinctElementsOccuringOnBothSortedArrays(a1, a2);
 		if( retorno == 0)
 			System.out.println("Nao tem elementos em comum.");
 		else if(retorno == -1)
@@ -41,5 +51,4 @@ public class Exercicio2 {
 		else
 			System.out.println(retorno);
 	}
-
 }

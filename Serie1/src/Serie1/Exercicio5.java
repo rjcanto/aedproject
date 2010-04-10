@@ -13,7 +13,7 @@ public class Exercicio5 {
 	public static File[] listAllFiles (File baseDir, FileFilter filter){
 		ArrayList <File> ret = new ArrayList <File> ();
 		File[] files;
-		File[] aux;
+		File[] retArray;
 		//usar iterador para percorrer a directoria e subdirectoria
 		//por cada directoria verificar se o file pertence ao filter
 		//se pertencer adiciona ao array
@@ -23,17 +23,19 @@ public class Exercicio5 {
 		
 		for(int i=0; i<files.length; ++i){
 			if(files[i].isDirectory()){
-				aux= listAllFiles(files[i], filter);
+				retArray= listAllFiles(files[i], filter);
 				//adicionar a lista
-				if(aux != null)
-					addArray (ret, aux);
+				if(retArray != null)
+					addArray (ret, retArray);
 			}
 				if(filter.accept(files[i]))
 					ret.add(files[i]);
 		}
 		
-		if(ret.size()!=0)
-			return (File[]) ret.toArray();
+		if(ret.size()!=0){
+			retArray = new File[ret.size()];
+			return  ret.toArray(retArray);
+		}
 		return null;
 	}
 
@@ -45,9 +47,12 @@ public class Exercicio5 {
 		
 		ret = listAllFiles(directoria, filter);
 		
-		for(int i=0; i<ret.length; ++i){
-			System.out.println(ret[i]);
-		}
+		if(ret != null)
+			for(int i=0; i<ret.length; ++i){
+				System.out.println(ret[i]);
+			}
+		else
+			System.out.println("Nao foram encontrados ficheiros.");
 	}
 
 }
