@@ -2,7 +2,8 @@ package Serie1;
 
 
 public class ArrayUtils {
-	
+	static int read=0;
+	static int write =0;
 /*	public static void mergeSort1 (int[] v, int l, int r){
 		if(l<r){
 			int meio = l+(r-l)/2;
@@ -45,10 +46,10 @@ public class ArrayUtils {
 		
 		while(l<=r){
 			mid = l+(r-l)/2;
-			
+			++read;
 			if(v[mid] == value)
 				return 1;
-			
+			++read;
 			if(v[mid] > value)
 				r = mid-1;
 			else
@@ -79,10 +80,10 @@ public class ArrayUtils {
 		
 		while(l<=r){
 			mid = l+(r-l)/2;
-			
+			++read;
 			if(v[mid] == value)
 				return mid;
-			
+			++read;
 			if(v[mid] > value)
 				r = mid-1;
 			else
@@ -138,15 +139,20 @@ public class ArrayUtils {
 		int right_start = mid + 1;
 
 		while ((start <= left_end) && (right_start <= end)) {
+			read+=2;
 			if (list[start] >= list[right_start]) // left most element of Left
 													// side > left most element
 													// of Right side
 			{
+				++read;
 				int temp = list[right_start];
 
 				for (int i = right_start - 1; i >= start; i--) {
+					++read;
+					++write;
 					list[i + 1] = list[i]; // shift elements
 				}
+				++write;
 				list[start] = temp; // insert element where it belongs
 				mid++;
 				right_start++; // advance counters
