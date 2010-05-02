@@ -1,6 +1,22 @@
 
 public class ArrayTools {
-
+	
+	public static int partition(int[]a, int l, int r){
+		int pivot = a[r];
+		int i=l-1;
+		int j=l;
+		
+		while(j<r){
+			if(a[j]<=pivot){
+				swap(a,i+1,j);
+				++i;
+			}
+			++j;
+		}
+		swap(a, i+1, r);
+		return i+1;
+	}
+	
 	public static void swap(int[] a, int idx1, int idx2) {
 		int aux = a[idx1];
 		a[idx1] = a[idx2];

@@ -1,12 +1,22 @@
 
 public class Exercicio2 {
+	
 	public static void heapChangeValue(int[] v, int len, int ix, int newValue){
 		if(v[0]<v[1]){
 			v[ix]=newValue;
+			
+			while(((ix-1) >= 0) && ((v[ix-1]/2) > v[ix]))
+				ix=v[ix-1]/2;
+			
+			
 			ArrayTools.MinHeapify(v, ix, len);
 		}
 		else{
 			v[ix]=newValue;
+			while(((ix-1)>=0) && (v[ix-1]/2 < v[ix]))
+				ix=v[ix-1]/2;
+			
+			
 			ArrayTools.MaxHeapify(v, ix, len);
 		}
 	}
