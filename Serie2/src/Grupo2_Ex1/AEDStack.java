@@ -154,4 +154,16 @@ public class AEDStack<E> implements  Queue<E>{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public static void main(String[] agrs){
+		AEDStack<Integer> stack = new AEDStack<Integer>();
+		for(int i=1; i<8; ++i) // 7 elementos
+			stack.add(i);
+		
+		stack.remove();
+		
+		Iterator <Integer> it = stack.iterator();
+		while(it.hasNext())
+			System.out.println(it.next());
+	}
 }
