@@ -18,6 +18,8 @@ public class Exercicio4 {
 					return new Iterator<File>(){
 						boolean flag = false;
 						public boolean hasNext() {
+							if(flag)
+								return false;
 							return filter.accept(baseDir);
 						}
 
@@ -92,7 +94,10 @@ public class Exercicio4 {
 							 * caso contrario retorna false
 							 */
 							if (elem!= null)	return true;
-							if (curr.hasNext())	return true;
+							if (curr.hasNext())	{
+								elem = curr.next();
+								return true;
+							}
 							while(!curr.hasNext() && i< files.length){
 								curr = getAllFiles(files[i++], filter).iterator();
 								return true;
