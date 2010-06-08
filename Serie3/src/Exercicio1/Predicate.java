@@ -1,5 +1,6 @@
 package Exercicio1;
 
-public class Predicate<T> {
 
+public interface Predicate<T> {
+	boolean eval(T val);
 }
