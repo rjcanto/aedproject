@@ -1,8 +1,8 @@
 package Exercicio1;
 
 
-interface Equality<V>{
+interface Equality<K>{
 
-	public int compare(V v1, V v2);
+	public int compare(K key, K k);
 
 }
