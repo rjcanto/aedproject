@@ -2,9 +2,13 @@ package Exercicio2;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
+import java.util.Stack;
 
 
-public class Methods {
+public class Methods <E> {
+	LinkedList<Node<E>> stack = new LinkedList<Node<E>>();
+	
 	static private class Node<E> {
 		E value;
 		Node<E> left;
@@ -110,20 +114,55 @@ public class Methods {
 		return list.right;
 	}
 
+	private Node<E> min (Node<E> root){
+		if(root == null)
+			return null;
+		
+		Node<E> curr = root;
+		
+		while(curr.left!=null){
+			stack.addLast (curr);
+			curr = curr.left;
+		}
+		return curr;
+	}
 	
-	public static <E> Iterable<E> inOrderIterator(Node<E> h){
+	private Node<E> after (Node<E> n){
+		if(n.right!=null){
+			return min(n);
+		}
+		else{
+			return stack.peekLast();
+		}
+	}
+	
+	public Iterable<E> inOrderIterator(final Node<E> h){
 		return new Iterable<E>(){
 
 			public Iterator<E> iterator() {
 				return new Iterator<E>(){
-					LinkedList<Node<E>> stack = new LinkedList<Node<E>>();
+					Node<E> curr = min(h);
+					E elem = curr.value;
 					
 					public boolean hasNext() {
-						return false;
+						if(elem != null)
+							return true;
+						
+						curr = after(curr);
+						
+						if(curr!=null)
+							elem = curr.value;
+						
+						return curr!=null;
 					}
 
 					public E next() {
-						return null;
+						if(!hasNext()){
+							throw new NoSuchElementException();
+						}
+						E next = elem;
+						elem = null;
+						return next;
 					}
 
 					public void remove() {
