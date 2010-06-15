@@ -114,7 +114,7 @@ public class Methods <E> {
 		return list.right;
 	}
 
-	private Node<E> min (Node<E> root){
+	private  Node<E> min (Node<E> root){
 		if(root == null)
 			return null;
 		
@@ -129,10 +129,13 @@ public class Methods <E> {
 	
 	private Node<E> after (Node<E> n){
 		if(n.right!=null){
-			return min(n);
+			return min(n.right);
 		}
 		else{
-			return stack.peekLast();
+			Node<E> aux = stack.peekLast();
+			if(aux!=null)
+				stack.removeLast();
+			return aux;
 		}
 	}
 	
@@ -148,7 +151,7 @@ public class Methods <E> {
 						if(elem != null)
 							return true;
 						
-						curr = after(curr);
+							curr = after(curr);
 						
 						if(curr!=null)
 							elem = curr.value;
@@ -208,7 +211,14 @@ public class Methods <E> {
 			aux = aux.right;
 		}
 		*/
-		aux = removeAllNotInInterval(root, 80, 120);
-		inOrder(aux);
+		//aux = removeAllNotInInterval(root, 80, 120);
+		//inOrder(aux);
+		
+		Methods <Integer> mth = new Methods<Integer>();
+		Iterable<Integer> iter = mth.inOrderIterator(root) ;
+		Iterator<Integer> it = iter.iterator();
+		while (it.hasNext())
+			System.out.println(it.next().toString() + " ; ");
+
 	}
 }
