@@ -3,8 +3,6 @@ import java.io.OutputStream;
 
 public class BitSink {
 	private OutputStream out;
-	
-	
 	/**
 	 * Construa e teste as classes BitSource e BitSink, que serão utilizadas
 	 * para realizar, respectivamente, leituras e escritas bit a bit em streams.
