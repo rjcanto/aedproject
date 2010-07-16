@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class HuffmanCode {
 	public static NodeHuffman huffman(PriorityQueue<NodeHuffman> C) {
-		int n = C.size();
+		//int n = C.size();
 		PriorityQueue<NodeHuffman> Q = C;
 
-		for (int i = 0; i < n-1; ++i) {
+		for (int i = 0; i < /*n-1*/C.size(); ++i) {
 			NodeHuffman z = new NodeHuffman();
 			NodeHuffman nl = new NodeHuffman();
 			NodeHuffman nr = new NodeHuffman();
@@ -83,7 +83,7 @@ public class HuffmanCode {
 
 	public static void main(String[] args) {
 		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(7);
-		String s = "ola,";
+		String s = "olaaa";
 		int i=0;
 		while(i<s.length()){
 			try {
@@ -102,13 +102,8 @@ public class HuffmanCode {
 		}
 		
 		NodeHuffman node = huffman(pq);
-		//inOrder(node);
-		//System.out.println(checkSiblingProp (node));
+		inOrder(node);
+		System.out.println(checkSiblingProp (node));
 		
-		CodHuffman cH = new CodHuffman();
-		cH = getCode(node, 'a');
-		
-		System.out.println(cH.bits);
-		System.out.println(cH.code);
 	}
 }

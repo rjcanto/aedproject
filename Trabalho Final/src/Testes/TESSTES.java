@@ -3,7 +3,7 @@ package Testes;
 import java.io.IOException;
 
 public class TESSTES {
-	public static CodHuffman inOrder(NodeHuffman n, char s, int bits, int cod){
+	/*public static CodHuffman inOrder(NodeHuffman n, char s, int bits, int cod){
 		CodHuffman cH = new CodHuffman ();
 		if(n==null){
 			cH.bits = -1;
@@ -22,11 +22,31 @@ public class TESSTES {
 		inOrder(n.right, s, bits+1, cod=(cod&1)<<1);
 		
 		return cH;
+	}*/
+	
+	public static CodHuffman inOrder(NodeHuffman n, char s, int bits, int cod, CodHuffman ret){
+		int bitsLeft = bits ; 
+		int bitsRight = bits ;
+		int codLeft = cod;
+		int codRight = cod;
+		
+		if(n==null)
+			return ret;
+		codLeft = (codLeft|0)<<1;
+		ret = inOrder(n.left, s, ++bitsLeft, codLeft, ret);
+		codRight = (codRight|1)<<1;
+		ret = inOrder(n.right, s, ++bitsRight, codRight, ret);
+		
+		if(n.left==null && n.right == null && n.character == s){
+			cod = cod>>1;
+			return new CodHuffman (cod, bits);
+		}
+		return ret;
 	}
 	
 	public static void main (String [] args){
 		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(7);
-		String s = "ola";
+		String s = "olaaa";
 		int i=0;
 		while(i<s.length()){
 			try {
@@ -48,8 +68,8 @@ public class TESSTES {
 		//inOrder(node);
 		//System.out.println(checkSiblingProp (node));
 		
-		CodHuffman cH = new CodHuffman();
-		cH = inOrder(node, 'l', 0, 0);
+		CodHuffman cH = new CodHuffman(0, -1);
+		cH = inOrder(node, 'o', 0, 0, cH);
 		
 		System.out.println(cH.bits);
 		System.out.println(cH.code);
