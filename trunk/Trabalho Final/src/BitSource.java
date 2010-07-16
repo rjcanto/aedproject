@@ -30,7 +30,6 @@ public class BitSource {
 		try {
 			in.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -55,6 +54,8 @@ public class BitSource {
 		try {
 			if(countBits == -1 || countBits >=8){
 				read = in.read();
+				if(read == -1)
+					return -1;
 				countBits = 0;
 			}
 			ret = readB(ret);
@@ -80,9 +81,9 @@ public class BitSource {
 		try {
 			FileInputStream fileStream = new FileInputStream(file);
 			BitSource bitSrc = new BitSource(fileStream);
-			System.out.println(bitSrc.read(15));
-			System.out.println(bitSrc.read(2));
-			System.out.println(bitSrc.read(6));
+			//System.out.println(bitSrc.read(15));
+			System.out.println(bitSrc.read(8));			
+			//System.out.println(bitSrc.read(6));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
