@@ -1,72 +1,78 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
+
+import java.io.IOException;
 
 public class TESSTES {
-	int countBits = -1;
-	int readB = 0; //guarda o readBits para pdoer ser actualizado
-	private InputStream in;
-	private int read;
-	private int shift = 0;
-	
-	public TESSTES (InputStream in){
-		this.in = in;
-	}
-	
-	private int readB (int ret){
-		int bit = 0;
-		while(countBits<8 && readB>0){
-			bit = read & 0x1;
-			read >>=1;
-			ret = ret | (bit<<shift++);
-			
-			++countBits;
-			--readB;
-		}
-		return ret;
-	}
-	
-	public int read(int readBits) {
-		readB = readBits;
-		int ret=0;
-		ret = 0;
-		try {
-			if(countBits == -1 || countBits >=8){
-				read = in.read();
-				countBits = 0;
-			}
-			ret = readB(ret);
-
-			while(readB>0){
-				if(countBits>=8 && readB>0){
-					read = in.read();
-					countBits = 0;
-				}
-				ret = readB(ret);
-			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
+	/*public static CodHuffman inOrder(NodeHuffman n, char s, int bits, int cod){
+		CodHuffman cH = new CodHuffman ();
+		if(n==null){
+			cH.bits = -1;
+			cH.code = -1;
+			return cH;		
 		}
 		
-		shift = 0;
+		inOrder(n.left, s, bits+1, cod=(cod&0)<<1);
+		
+		if(n.left==null && n.right == null && n.character == s){
+			cH.bits = bits;
+			cH.code = cod;
+			return cH;
+		}
+		
+		inOrder(n.right, s, bits+1, cod=(cod&1)<<1);
+		
+		return cH;
+	}*/
+	
+	public static CodHuffman inOrder(NodeHuffman n, char s, int bits, int cod, CodHuffman ret){
+		int bitsLeft = bits ; 
+		int bitsRight = bits ;
+		int codLeft = cod;
+		int codRight = cod;
+		
+		if(n==null)
+			return ret;
+		codLeft = (codLeft|0)<<1;
+		ret = inOrder(n.left, s, ++bitsLeft, codLeft, ret);
+		codRight = (codRight|1)<<1;
+		ret = inOrder(n.right, s, ++bitsRight, codRight, ret);
+		
+		if(n.left==null && n.right == null && n.character == s){
+			cod = cod>>1;
+			return new CodHuffman (cod, bits);
+		}
 		return ret;
 	}
 	
-	public static void main(String[] args) {
-		File file = new File("C:\\TESTES\\teste1.txt");
-		try {
-			FileInputStream fileStream = new FileInputStream(file);
-			TESSTES bitSrc = new TESSTES(fileStream);
-			System.out.println(bitSrc.read(15));
-			System.out.println(bitSrc.read(2));
-			System.out.println(bitSrc.read(6));
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+	public static void main (String [] args){
+		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(7);
+		String s = "olaa";
+		int i=0;
+		while(i<s.length()){
+			try {
+				CountBytes.freqTable(s.charAt(i++));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+		i=0;
+		while(i<s.length()){
+			NodeHuffman nd = new NodeHuffman();
+			nd.character = s.charAt(i);
+			nd.freq = CountBytes.getfreq(s.charAt(i));
+			pq.insert(nd);
+			++i;
+		}
+		
+		NodeHuffman node = HuffmanCode.huffman(pq);
+		//inOrder(node);
+		//System.out.println(checkSiblingProp (node));
+		
+		CodHuffman cH = new CodHuffman(0, -1);
+		cH = inOrder(node, 'o', 0, 0, cH);
+		
+		System.out.println(cH.bits);
+		System.out.println(cH.code);
 	}
+	
 }
