@@ -12,6 +12,8 @@ public class PriorityQueue <E extends Comparable<E>>{
 		dim = 0; 
 	}
 
+	
+	
 	public boolean insert(E elem){
 		/*if(dim < PQ.length){
 			PQ[dim++]=elem;
