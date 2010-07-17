@@ -20,11 +20,11 @@ public class MinHeap<E extends Comparable<E>>{
 			return;
 		}*/
 		
-		while(i>0 && a[((i-1)/2)].compareTo(a[i])>0){
+		while(i>0 && (a[((i-1)/2)].compareTo(a[i])>0)){
 			E aux = a[i];
 			a[i] = a[((i-1)/2)];
 			a[((i-1)/2)] = aux;
-			i = ((i-1)/2)-1;
+			i = ((i-1)/2);
 		}
 	}
 	

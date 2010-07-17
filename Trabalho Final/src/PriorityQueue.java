@@ -65,23 +65,24 @@ public class PriorityQueue <E extends Comparable<E>>{
 	
 	public static void main(String[] args) {
 		PriorityQueue<Integer> PQ = new PriorityQueue<Integer>(5);
-		PQ.insert(6);
-		PQ.insert(1);
+		//PQ.insert(6);
+		//PQ.insert(1);
 		PQ.insert(0);
+		PQ.insert(4);
 		PQ.insert(4);
 		PQ.insert(2);
 		PQ.insert(5);
 		System.out.println(PQ.extractMin());
-		System.out.println(PQ.extractMin());
-		System.out.println(PQ.extractMin());
-		System.out.println(PQ.extractMin());
-		System.out.println(PQ.extractMin());
-		System.out.println("---------------------");
-		PQ.insert(0);
-		PQ.insert(4);
-		PQ.insert(2);
-		System.out.println(PQ.extractMin());
-		System.out.println(PQ.extractMin());
+//		System.out.println(PQ.extractMin());
+//		System.out.println(PQ.extractMin());
+//		System.out.println(PQ.extractMin());
+//		System.out.println(PQ.extractMin());
+//		System.out.println("---------------------");
+//		PQ.insert(0);
+//		PQ.insert(4);
+//		PQ.insert(2);
+//		System.out.println(PQ.extractMin());
+//		System.out.println(PQ.extractMin());
 	}
 
 }
