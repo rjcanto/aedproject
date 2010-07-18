@@ -14,6 +14,10 @@ public class CountBytes {
 		return freqTbl;
 	}
 	
+	public static int[] getArray(){
+		return freqTbl;
+	}
+	
 	public static int getfreq(char c){
 		char value = 0;
 		if (c < 0 && c > -129) {

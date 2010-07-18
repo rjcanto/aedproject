@@ -5,6 +5,7 @@ public class NodeHuffman implements Comparable <NodeHuffman>{
 	NodeHuffman left;
 	NodeHuffman right;
 	boolean isLeaf;
+	CodHuffman cod;
 
 	public int compareTo(NodeHuffman n) {
 		return freq - n.freq;
