@@ -38,7 +38,7 @@ public class TESSTES {
 		ret = inOrder(n.right, s, ++bitsRight, codRight, ret);
 		
 		if(n.left==null && n.right == null && n.character == s){
-			cod = cod>>1;
+			//cod = cod>>1;
 			return new CodHuffman (cod, bits);
 		}
 		return ret;
@@ -46,7 +46,7 @@ public class TESSTES {
 	
 	public static void main (String [] args){
 		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(7);
-		String s = "olaa";
+		String s = "olaaa";
 		int i=0;
 		while(i<s.length()){
 			try {
@@ -55,13 +55,18 @@ public class TESSTES {
 				e.printStackTrace();
 			}
 		}
-		i=0;
-		while(i<s.length()){
+		
+		int[] freqT = CountBytes.getArray();
+		
+		
+		for(i=0; i<freqT.length; ++i){
+			if(freqT[i]!=0){
 			NodeHuffman nd = new NodeHuffman();
-			nd.character = s.charAt(i);
-			nd.freq = CountBytes.getfreq(s.charAt(i));
+			nd.character = (char)i;
+			nd.freq = freqT[i];
 			pq.insert(nd);
 			++i;
+			}
 		}
 		
 		NodeHuffman node = HuffmanCode.huffman(pq);
