@@ -1,10 +1,5 @@
-package main;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class HuffmanCode {
@@ -113,7 +108,7 @@ public class HuffmanCode {
 		return list.right;
 	}
 
-	/* testar se ï¿½ arvore de Huffman */
+	/* testar se é arvore de Huffman */
 	public static boolean checkSiblingProp(NodeHuffman nh) {
 		NodeHuffman previous = null;
 		ArrayList<NodeHuffman> binList = new ArrayList<NodeHuffman>();
@@ -140,7 +135,7 @@ public class HuffmanCode {
 
 	public static CodHuffman getCode(NodeHuffman n, char s) {
 		CodHuffman cH = new CodHuffman(0, -1);
-		cH = inOrder(n, 'o', 0, 0, cH);
+		cH = inOrder(n, s, 0, 0, cH);
 		return cH;
 	}
 	
@@ -168,13 +163,15 @@ public class HuffmanCode {
 	public static char getSimbol (NodeHuffman n, CodHuffman cod){
 		int c = cod.code;
 		int bits = cod.bits;
+		int MASK = 1<<(bits-1);
 		while(bits>0){
-			int bit = c&0x1;
+			int bit = ((c&MASK) != 0 ? 1 : 0);
 			if(bit == 0)
 				n=n.left;
 			else 
 				n = n.right;
 			--bits;
+			MASK>>=1;
 		}
 		return n.character;
 	}
@@ -208,18 +205,18 @@ public class HuffmanCode {
 		System.out.println(checkSiblingProp(node));
 		PrintinOrder(node);
 		
-		/***********************Ate aqui Funca!**********************/
-//		CodHuffman[] cd = getListOfLeafs(node);
-//		for (int j = 0; j < cd.length; ++j) {
-//		if(cd[j]!=null)
-//			System.out.println((char)j + " have:" + cd[j].bits + "bits and code:" + cd[j].code);
-//	}
-//		System.out.println("bits: "+ getCode(node, 'a').bits);
-//		System.out.println("codigo: "+getCode(node, 'a').code);
-//		
-//		CodHuffman cod = new CodHuffman();
-//		cod.bits = 1;
-//		cod.code = 1;
-//		System.out.println(getSimbol (node, cod));
+		CodHuffman[] cd = getListOfLeafs(node);
+		for (int j = 0; j < cd.length; ++j) {
+		if(cd[j]!=null)
+			System.out.println((char)j + " have:" + cd[j].bits + "bits and code:" + cd[j].code);
+		}
+		
+		System.out.println("bits: "+ getCode(node, 'o').bits);
+		System.out.println("codigo: "+getCode(node, 'o').code);
+		
+		CodHuffman cod = new CodHuffman();
+		cod.bits = 3;
+		cod.code = 0x1;
+		System.out.println(getSimbol (node, cod));
 	}
 }
