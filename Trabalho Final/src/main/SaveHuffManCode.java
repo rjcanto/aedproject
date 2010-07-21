@@ -1,15 +1,15 @@
+package main;
 import java.io.ByteArrayOutputStream;
 
 public class SaveHuffManCode {
-	public static ByteArrayOutputStream saveCode (NodeHuffman node){
-		ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
-		BitSink bitSnk = new BitSink(BAOS);
+	public static BitSink saveCode (NodeHuffman node){
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		BitSink bitSnk = new BitSink(baos);
 		saveNodes(node, bitSnk);
-		bitSnk.close();
-		return BAOS;
+		return bitSnk;
 	}
 	
-	public static void saveNodes(NodeHuffman node, BitSink bS){
+	private static void saveNodes(NodeHuffman node, BitSink bS){
 		if(node.isLeaf){
 			bS.write(1, 1);
 			bS.write(8, node.character);
@@ -43,3 +43,4 @@ public class SaveHuffManCode {
 		return nd = constrTree(bitS, nd.right);		
 	}
 }
+

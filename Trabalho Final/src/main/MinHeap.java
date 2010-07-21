@@ -1,4 +1,4 @@
-package Testes;
+package main;
 public class MinHeap<E extends Comparable<E>>{
 	
 //	public MinHeap(E [] a){
@@ -21,11 +21,11 @@ public class MinHeap<E extends Comparable<E>>{
 			return;
 		}*/
 		
-		while(i>0 && a[((i-1)/2)].compareTo(a[i])>0){
+		while(i>0 && (a[((i-1)/2)].compareTo(a[i])>0)){
 			E aux = a[i];
 			a[i] = a[((i-1)/2)];
 			a[((i-1)/2)] = aux;
-			i = ((i-1)/2)-1;
+			i = ((i-1)/2);
 		}
 	}
 	
@@ -39,8 +39,8 @@ public class MinHeap<E extends Comparable<E>>{
 	@SuppressWarnings("hiding")
 	public <E extends Comparable<E>> void MinHeapify(E[] a, int i, int count) {
 		int left, right, smalest;
-		left = i * 2 + 1; // 1º filho da esquerda
-		right = i * 2 + 2; // 1º filho da direita
+		left = i * 2 + 1; // 1ï¿½ filho da esquerda
+		right = i * 2 + 2; // 1ï¿½ filho da direita
 
 		/*
 		 * se o indice da esquerda for menor que o count e o parent for maior
