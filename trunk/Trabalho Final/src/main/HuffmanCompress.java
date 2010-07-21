@@ -1,5 +1,3 @@
-package main ;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -10,11 +8,12 @@ public class HuffmanCompress {
 	private CodHuffman[] code;
 	
 	public HuffmanCompress (InputStream in){
+		InputStream aux = in;
 		bitSrc = new BitSource (in);
 		bitSrc.close();
 		pq = HuffmanCode.buildPriorityQueue(bitSrc);
 		
-		//criaÃ§ao da Ã¡rvore de codificaÃ§ao
+		//criaçao da árvore de codificaçao
 		NodeHuffman node = HuffmanCode.huffman(pq);
 		
 		//guardar a arvore no ficheiro
@@ -22,13 +21,13 @@ public class HuffmanCompress {
 		
 		//guardar os caracteres
 		code = HuffmanCode.getListOfLeafs(node);
+		
 		int c;
 		do{
 			CodHuffman cd = null;
 			c = bitSrc.read(8);
 			if(c!=-1)
 				cd = code[c];
-			if(cd!=null)
 				bitSnk.write(cd.bits, cd.code);
 		}while(c!=-1);
 		bitSrc.close();
