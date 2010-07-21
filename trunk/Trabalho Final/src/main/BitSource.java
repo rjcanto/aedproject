@@ -1,3 +1,4 @@
+package main;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,12 +13,12 @@ public class BitSource {
 	private int read;
 	private int shift = 0;
 	/**
-	 * Construa e teste as classes BitSource e BitSink, que serão utilizadas
+	 * Construa e teste as classes BitSource e BitSink, que serï¿½o utilizadas
 	 * para realizar, respectivamente, leituras e escritas bit a bit em streams.
-	 * A classe BitSource deverá ter, no mínimo: construtor com um argumento do
-	 * tipo InputStream, de onde serão lidos os dados, byte a byte, à medida que
-	 * for sendo necessário; o método close, para fechar o stream subjacente; e
-	 * o método read com um argumento inteiro para indicar o número de bits a
+	 * A classe BitSource deverï¿½ ter, no mï¿½nimo: construtor com um argumento do
+	 * tipo InputStream, de onde serï¿½o lidos os dados, byte a byte, ï¿½ medida que
+	 * for sendo necessï¿½rio; o mï¿½todo close, para fechar o stream subjacente; e
+	 * o mï¿½todo read com um argumento inteiro para indicar o nï¿½mero de bits a
 	 * ler (entre 1 e 31) e retorno inteiro com os dados lidos ou -1, se o
 	 * stream subjacente estiver esgotado.
 	 **/
@@ -60,7 +61,7 @@ public class BitSource {
 				countBits = 0;
 			}
 			ret = readB(ret);
-
+			
 			while(readB>0){
 				if(countBits>=8){
 					read = in.read();

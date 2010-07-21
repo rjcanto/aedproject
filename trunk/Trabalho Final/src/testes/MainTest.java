@@ -1,7 +1,11 @@
+package testes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import main.BitSource;
+import main.CountBytes;
 
 
 public class MainTest {

@@ -1,3 +1,4 @@
+package main;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -112,7 +113,7 @@ public class HuffmanCode {
 		return list.right;
 	}
 
-	/* testar se é arvore de Huffman */
+	/* testar se ï¿½ arvore de Huffman */
 	public static boolean checkSiblingProp(NodeHuffman nh) {
 		NodeHuffman previous = null;
 		ArrayList<NodeHuffman> binList = new ArrayList<NodeHuffman>();

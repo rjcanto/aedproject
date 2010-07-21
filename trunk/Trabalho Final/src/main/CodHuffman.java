@@ -1,4 +1,4 @@
-package Testes;
+package main;
 
 public class CodHuffman {
 	int code;

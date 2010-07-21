@@ -1,5 +1,5 @@
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
+package main;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -67,23 +67,15 @@ public class BitSink {
 			e.printStackTrace();
 		}
 	}
-
-	public static void main(String[] args) throws FileNotFoundException {
-		ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
-		BitSink bitSnk = new BitSink(BAOS);
-		//bitSnk.write(9, 888);
-		//bitSnk.write(8, 180);
-		bitSnk.write(1, 0x3);
-		bitSnk.write(2, 0x4);
-		bitSnk.write(3, 0x4);
-		bitSnk.write(9, 0x15);
-		
-		bitSnk.close();
-		byte[] byteArray = BAOS.toByteArray();
-		
-		for(int i=0; i<byteArray.length; ++i){
-			System.out.println(String.format("0x%x", byteArray[i]));
+	
+	public void closeWithBit() {
+		try {
+			if(resBits!=0)
+				out.write(res);
+			out.write(1) ;
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	//	System.out.println(String.format("%x", 45));
 	}
 }
