@@ -1,42 +1,60 @@
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class HuffmanCode {
 
 	public static PriorityQueue<NodeHuffman> buildPriorityQueue(BitSource in) {
-		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(7);
-		// TODO falta fazer a adaptaçao do BitSource
-		String s = "olaaa";
-		int i = 0;
-		while (i < s.length()) {
-			try {
-				CountBytes.freqTable(s.charAt(i++));
-			} catch (IOException e) {
-				e.printStackTrace();
+		int c;
+		//le do BitSource os elementos para a FrequenceTable(FQ)
+		do{
+			c = in.read(8);
+			//System.out.println(String.format("0x%x",c)+ " -> " + c);
+			if(c!=-1){
+				try {
+					CountBytes.freqTable((char) c);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		}
-
+		}while(c!=-1);
+		
 		int[] freqT = CountBytes.getArray();
+		int count =0;
+		
+		//conta as ocorrencias diferentes de zero no array de ocorrencias
+		for(int i=0; i<freqT.length; ++i){
+			if (freqT[i] != 0)
+				++count;
+		}
+		
+		//cria a PriorityQueue(PQ) com o count elementos
+		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(count);
 
-		for (i = 0; i < freqT.length; ++i) {
+		//adiciona a PQ os elementos da tabela de frequencias
+		for (int i = 0; i < freqT.length; ++i) {
 			if (freqT[i] != 0) {
 				NodeHuffman nd = new NodeHuffman();
 				nd.character = (char) i;
 				nd.freq = freqT[i];
 				nd.isLeaf = true;
 				pq.insert(nd);
-				++i;
 			}
 		}
+		
+		//retorna a PQ
 		return pq;
 	}
 
 	public static NodeHuffman huffman(PriorityQueue<NodeHuffman> C) {
-		// int n = C.size();
+		int n = C.size();
 		PriorityQueue<NodeHuffman> Q = C;
 
-		for (int i = 0; i < /* n-1 */C.size(); ++i) {
+		for (int i = 0; i < n-1 /*C.size()*/; ++i) {
 			NodeHuffman z = new NodeHuffman();
 			NodeHuffman nl = new NodeHuffman();
 			NodeHuffman nr = new NodeHuffman();
@@ -119,7 +137,13 @@ public class HuffmanCode {
 		return true;
 	}
 
-	public static CodHuffman inOrder(NodeHuffman n, char s, int bits, int cod,
+	public static CodHuffman getCode(NodeHuffman n, char s) {
+		CodHuffman cH = new CodHuffman(0, -1);
+		cH = inOrder(n, 'o', 0, 0, cH);
+		return cH;
+	}
+	
+	private static CodHuffman inOrder(NodeHuffman n, char s, int bits, int cod,
 			CodHuffman ret) {
 		int bitsLeft = bits;
 		int bitsRight = bits;
@@ -138,12 +162,6 @@ public class HuffmanCode {
 			return new CodHuffman(cod, bits);
 		}
 		return ret;
-	}
-
-	public static CodHuffman getCode(NodeHuffman n, char s) {
-		CodHuffman cH = new CodHuffman(0, -1);
-		cH = inOrder(n, 'o', 0, 0, cH);
-		return cH;
 	}
 
 	public static char getSimbol (NodeHuffman n, CodHuffman cod){
@@ -166,64 +184,41 @@ public class HuffmanCode {
 		
 		PrintinOrder(root.left);
 		if(root.freq!=0){
-			//System.out.print(root.character + " -> ");
-			//System.out.println(root.freq);
+			System.out.print(root.character + " -> ");
 			System.out.println(root.freq);
+			//System.out.println(root.freq);
 		}
 		PrintinOrder(root.right);
 	}
 	
 	public static void main(String[] args) {
-		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(7);
-		String s = "olaaa";
-		int i = 0;
-		while (i < s.length()) {
-			try {
-				CountBytes.freqTable(s.charAt(i++));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		byte[] a = new byte[10];
+		String s = "ola mundo!";
+		
+		for(int i=0; i<s.length(); ++i){
+			a[i] = (byte) s.charAt(i);
 		}
-
-		int[] freqT = CountBytes.getArray();
-
-		for (i = 0; i < freqT.length; ++i) {
-			if (freqT[i] != 0) {
-				NodeHuffman nd = new NodeHuffman();
-				nd.character = (char) i;
-				nd.freq = freqT[i];
-				pq.insert(nd);
-				++i;
-			}
-		}
-
+		ByteArrayInputStream in = new ByteArrayInputStream(a);
+		
+		BitSource bitSrc = new BitSource(in);
+		PriorityQueue<NodeHuffman> pq = buildPriorityQueue(bitSrc);
+		
 		NodeHuffman node = huffman(pq);
-		//PrintinOrder(node);
-		//System.out.println(checkSiblingProp(node));
+		System.out.println(checkSiblingProp(node));
+		PrintinOrder(node);
 		
-		CodHuffman[] cd = getListOfLeafs(node);
-		for (int j = 0; j < cd.length; ++j) {
-		if(cd[j]!=null)
-			System.out.println((char)j + " have:" + cd[j].bits + "bits and code:" + cd[j].code);
-	}
-		System.out.println("bits: "+ getCode(node, 'a').bits);
-		System.out.println("codigo: "+getCode(node, 'a').code);
-		
-		CodHuffman cod = new CodHuffman();
-		cod.bits = 1;
-		cod.code = 1;
-		System.out.println(getSimbol (node, cod));
-
-		//NodeHuffman n = getListOfLeafs(node);
-
-		
-
-
-//
-
-		/*
-		 * while(n.right!=null){ System.out.println(n.character +" , "+ n.freq +
-		 * " " + " , " + n.cod.bits + " , " + n.cod.code); n = n.right; }
-		 */
+		/***********************Ate aqui Funca!**********************/
+//		CodHuffman[] cd = getListOfLeafs(node);
+//		for (int j = 0; j < cd.length; ++j) {
+//		if(cd[j]!=null)
+//			System.out.println((char)j + " have:" + cd[j].bits + "bits and code:" + cd[j].code);
+//	}
+//		System.out.println("bits: "+ getCode(node, 'a').bits);
+//		System.out.println("codigo: "+getCode(node, 'a').code);
+//		
+//		CodHuffman cod = new CodHuffman();
+//		cod.bits = 1;
+//		cod.code = 1;
+//		System.out.println(getSimbol (node, cod));
 	}
 }
