@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class HuffmanCode {
 
-	public static PriorityQueue<NodeHuffman> buildPriorityQueue(File file) {
+	public static PriorityQueue<NodeHuffman> buildPriorityQueue(BitSource in) {
 		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(7);
-		// TODO falta fazer a adaptaçao do File
+		// TODO falta fazer a adaptaçao do BitSource
 		String s = "olaaa";
 		int i = 0;
 		while (i < s.length()) {
@@ -24,11 +24,11 @@ public class HuffmanCode {
 				NodeHuffman nd = new NodeHuffman();
 				nd.character = (char) i;
 				nd.freq = freqT[i];
+				nd.isLeaf = true;
 				pq.insert(nd);
 				++i;
 			}
 		}
-
 		return pq;
 	}
 
@@ -134,7 +134,7 @@ public class HuffmanCode {
 		ret = inOrder(n.right, s, ++bitsRight, codRight, ret);
 
 		if (n.left == null && n.right == null && n.character == s) {
-			//cod = cod >> 1;
+			cod = cod >> 1;
 			return new CodHuffman(cod, bits);
 		}
 		return ret;
@@ -146,6 +146,33 @@ public class HuffmanCode {
 		return cH;
 	}
 
+	public static char getSimbol (NodeHuffman n, CodHuffman cod){
+		int c = cod.code;
+		int bits = cod.bits;
+		while(bits>0){
+			int bit = c&0x1;
+			if(bit == 0)
+				n=n.left;
+			else 
+				n = n.right;
+			--bits;
+		}
+		return n.character;
+	}
+	
+	public static void PrintinOrder(NodeHuffman root){
+		if(root==null)
+			return;
+		
+		PrintinOrder(root.left);
+		if(root.freq!=0){
+			//System.out.print(root.character + " -> ");
+			//System.out.println(root.freq);
+			System.out.println(root.freq);
+		}
+		PrintinOrder(root.right);
+	}
+	
 	public static void main(String[] args) {
 		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(7);
 		String s = "olaaa";
@@ -171,19 +198,28 @@ public class HuffmanCode {
 		}
 
 		NodeHuffman node = huffman(pq);
-		// inOrder(node);
-		System.out.println(checkSiblingProp(node));
-		// System.out.println("bits: "+ getCode(node, 'a').bits);
-		// System.out.println("codigo: "+getCode(node, 'a').code);
-
-		// NodeHuffman n = getListOfLeafs(node);
-
+		//PrintinOrder(node);
+		//System.out.println(checkSiblingProp(node));
+		
 		CodHuffman[] cd = getListOfLeafs(node);
-
 		for (int j = 0; j < cd.length; ++j) {
-			if(cd[j]!=null)
-				System.out.println((char)j + " have:" + cd[j].bits + "bits and code:" + cd[j].code);
-		}
+		if(cd[j]!=null)
+			System.out.println((char)j + " have:" + cd[j].bits + "bits and code:" + cd[j].code);
+	}
+		System.out.println("bits: "+ getCode(node, 'a').bits);
+		System.out.println("codigo: "+getCode(node, 'a').code);
+		
+		CodHuffman cod = new CodHuffman();
+		cod.bits = 1;
+		cod.code = 1;
+		System.out.println(getSimbol (node, cod));
+
+		//NodeHuffman n = getListOfLeafs(node);
+
+		
+
+
+//
 
 		/*
 		 * while(n.right!=null){ System.out.println(n.character +" , "+ n.freq +

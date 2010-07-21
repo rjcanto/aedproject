@@ -1,3 +1,4 @@
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -61,7 +62,7 @@ public class BitSource {
 			ret = readB(ret);
 
 			while(readB>0){
-				if(countBits>=8 && readB>0){
+				if(countBits>=8){
 					read = in.read();
 					countBits = 0;
 				}
@@ -78,14 +79,32 @@ public class BitSource {
 
 	public static void main(String[] args) {
 		File file = new File("C:\\TESTES\\teste1.txt");
-		try {
-			FileInputStream fileStream = new FileInputStream(file);
-			BitSource bitSrc = new BitSource(fileStream);
-			//System.out.println(bitSrc.read(15));
-			System.out.println(bitSrc.read(8));			
-			//System.out.println(bitSrc.read(6));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		byte[] a = new byte[10];
+		String s = "ola mundo!";
+		
+		for(int i=0; i<s.length(); ++i){
+			a[i] = (byte) s.charAt(i);
 		}
+		
+		ByteArrayInputStream bais = new ByteArrayInputStream(a);
+		
+		//FileInputStream fileStream = new FileInputStream(file);
+		//BitSource bitSrc = new BitSource(fileStream);
+		BitSource bitSrc = new BitSource(bais);
+//			System.out.println(bitSrc.read(15));
+//			System.out.println(bitSrc.read(8));			
+//			System.out.println(bitSrc.read(6));
+//			
+		System.out.println(bitSrc.read(8));
+		System.out.println(bitSrc.read(8));
+		System.out.println(bitSrc.read(8));
+		System.out.println(bitSrc.read(8));
+		System.out.println(bitSrc.read(8));
+		System.out.println(bitSrc.read(8));
+		System.out.println(bitSrc.read(8));
+		System.out.println(bitSrc.read(8));
+		System.out.println(bitSrc.read(8));
+		System.out.println(bitSrc.read(8));
+		System.out.println(bitSrc.read(8));
 	}
 }
