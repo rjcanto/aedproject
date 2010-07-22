@@ -1,111 +1,61 @@
 package main;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.io.IOException;
 import java.io.InputStream;
 
 public class BitSource {
-	private int countBits = -1;
-	private int readB = 0; //guarda o readBits para pdoer ser actualizado
-	private InputStream in;
-	private int read;
-	private int shift = 0;
-	/**
-	 * Construa e teste as classes BitSource e BitSink, que ser�o utilizadas
-	 * para realizar, respectivamente, leituras e escritas bit a bit em streams.
-	 * A classe BitSource dever� ter, no m�nimo: construtor com um argumento do
-	 * tipo InputStream, de onde ser�o lidos os dados, byte a byte, � medida que
-	 * for sendo necess�rio; o m�todo close, para fechar o stream subjacente; e
-	 * o m�todo read com um argumento inteiro para indicar o n�mero de bits a
-	 * ler (entre 1 e 31) e retorno inteiro com os dados lidos ou -1, se o
-	 * stream subjacente estiver esgotado.
-	 **/
+    private InputStream input;
+    private byte remainder = 0;
+    private int bitsRemaining = 0;
 
-	public BitSource(InputStream in) {
-		this.in = in;
-		read = 0;
-	}
+    public BitSource(InputStream in) { input = in; if (input.markSupported()) input.mark(Integer.MAX_VALUE);}
 
-	public void close() {
-		try {
-			in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public void close() {
+        try {
+            input.close();
+        } catch (IOException e) {
+            // TODO: Treat input.close exception
+        }
+    }
 
-	private int readB (int ret){
-		int bit = 0;
-		while(countBits<8 && readB>0){
-			bit = read & 0x1;
-			read >>=1;
-			ret = ret | (bit<<shift++);
-			
-			++countBits;
-			--readB;
-		}
-		return ret;
-	}
-	
-	public int read(int readBits) {
-		readB = readBits;
-		int ret=0;
-		ret = 0;
-		try {
-			if(countBits == -1 || countBits >=8){
-				read = in.read();
-				if(read == -1)
-					return -1;
-				countBits = 0;
-			}
-			ret = readB(ret);
-			
-			while(readB>0){
-				if(countBits>=8){
-					read = in.read();
-					countBits = 0;
-				}
-				ret = readB(ret);
-			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		shift = 0;
-		return ret;
-	}
+    public int read(int bits) {
+        if (bits < 1 || bits > 31) throw new IllegalArgumentException();
+        int valueRead = 0;
+        int bitsRead = 0;
+        while (bits > 0) {
+            while (bitsRemaining > 0 && bits > 0) {
+                valueRead = (valueRead << 1) | ((remainder >>> 7) & 0x01);
+                bitsRemaining--;
+                remainder <<= 1;
+                bits--;
+                bitsRead++;
+            }
+            if (bits > 0) {
+                int read = -1;
+                try {
+                    read = input.read();
+                } catch (IOException e) {
+                    System.err.print("FODEU");
+                }
+                if (read == -1)
+                    if (bitsRead > 0) return valueRead << (8 - bitsRead);
+                    else return -1;
+                int shifts = bits <= 8 ? bits : 8;
+                int mask = (int)Math.pow(2, shifts) - 1;
+                valueRead = (valueRead << shifts) | ((read >> (8 - shifts)) & mask);
+                remainder = (byte)(read << shifts);
+                bitsRemaining = 8 - shifts;
+                bits -= shifts;
+            }
+        }
+        return valueRead;
+    }
 
-	public static void main(String[] args) {
-		File file = new File("C:\\TESTES\\teste1.txt");
-		byte[] a = new byte[10];
-		String s = "ola mundo!";
-		
-		for(int i=0; i<s.length(); ++i){
-			a[i] = (byte) s.charAt(i);
-		}
-		
-		ByteArrayInputStream bais = new ByteArrayInputStream(a);
-		
-		//FileInputStream fileStream = new FileInputStream(file);
-		//BitSource bitSrc = new BitSource(fileStream);
-		BitSource bitSrc = new BitSource(bais);
-//			System.out.println(bitSrc.read(15));
-//			System.out.println(bitSrc.read(8));			
-//			System.out.println(bitSrc.read(6));
-//			
-		System.out.println(bitSrc.read(8));
-		System.out.println(bitSrc.read(8));
-		System.out.println(bitSrc.read(8));
-		System.out.println(bitSrc.read(8));
-		System.out.println(bitSrc.read(8));
-		System.out.println(bitSrc.read(8));
-		System.out.println(bitSrc.read(8));
-		System.out.println(bitSrc.read(8));
-		System.out.println(bitSrc.read(8));
-		System.out.println(bitSrc.read(8));
-		System.out.println(bitSrc.read(8));
-	}
+    public void reset() {
+        try {
+            if (input.markSupported()) input.reset();
+        } catch (IOException e) {
+            // TODO: Treat ioexception
+        }
+    }
 }
