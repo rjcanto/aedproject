@@ -19,8 +19,8 @@ public class MIAN {
 	}
 	
 	public static void main(String[] args) {
-		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(7);
-		String s = "olaaa";
+		PriorityQueue<NodeHuffman> pq = new PriorityQueue<NodeHuffman>(9);
+		String s = "ola mundo!";
 		int i = 0;
 		while (i < s.length()) {
 			try {
@@ -39,12 +39,12 @@ public class MIAN {
 				nd.freq = freqT[i];
 				nd.isLeaf = true;
 				pq.insert(nd);
-				++i;
 			}
 		}
 
 		NodeHuffman node = HuffmanCode.huffman(pq);
-		//PrintinOrder(node);
+		
+		PrintinOrder(node);
 		//System.out.println(checkSiblingProp(node));
 		
 		//CodHuffman[] cd = HuffmanCode.getListOfLeafs(node);
@@ -75,7 +75,6 @@ public class MIAN {
 		BitSource bS = new BitSource(bais);
 		//NodeCode nd = SaveHuffManCode.constructTreeHuffman(bS);
 		NodeHuffman nd = SaveHuffManCode.constructTreeHuffman(bS);
-		
 		PrintinOrder(nd);
 		
 		

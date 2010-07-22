@@ -1,4 +1,8 @@
+package main;
+
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class HuffmanCompress {
@@ -6,43 +10,44 @@ public class HuffmanCompress {
 	private BitSource bitSrc;
 	private PriorityQueue<NodeHuffman> pq;
 	private CodHuffman[] code;
+	private ByteArrayOutputStream baos;
 	
 	public HuffmanCompress (InputStream in){
-		InputStream aux = in;
 		bitSrc = new BitSource (in);
 		bitSrc.close();
+		
 		pq = HuffmanCode.buildPriorityQueue(bitSrc);
+		
+		//volta ao inicio do stream
+		try {
+			in.reset();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//cria uma nova instancia de bitSource
+		bitSrc = new BitSource(in);
 		
 		//criaçao da árvore de codificaçao
 		NodeHuffman node = HuffmanCode.huffman(pq);
 		
 		//guardar a arvore no ficheiro
-		bitSnk = SaveHuffManCode.saveCode(node);
+		baos = SaveHuffManCode.saveCode(node);
+		bitSnk = new BitSink(baos);
 		
 		//guardar os caracteres
 		code = HuffmanCode.getListOfLeafs(node);
-		
+
 		int c;
-		do{
+		while((c = bitSrc.read(8))!=-1){
 			CodHuffman cd = null;
-			c = bitSrc.read(8);
-			if(c!=-1)
-				cd = code[c];
-				bitSnk.write(cd.bits, cd.code);
-		}while(c!=-1);
-		bitSrc.close();
+			cd = code[c];
+			bitSnk.write(cd.bits, cd.code);
+		}
 		bitSnk.close();
 	}
 	
-	public static void main (String[]args){
-		byte[] a = new byte[10];
-		String s = "ola mundo!";
-		
-		for(int i=0; i<s.length(); ++i){
-			a[i] = (byte) s.charAt(i);
-		}
-		ByteArrayInputStream in = new ByteArrayInputStream(a);
-		HuffmanCompress hc = new HuffmanCompress(in);
-		
+	public ByteArrayOutputStream getCompressFile (){
+		return baos;
 	}
 }

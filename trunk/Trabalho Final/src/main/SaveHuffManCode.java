@@ -2,11 +2,11 @@ package main;
 import java.io.ByteArrayOutputStream;
 
 public class SaveHuffManCode {
-	public static BitSink saveCode (NodeHuffman node){
+	public static ByteArrayOutputStream saveCode (NodeHuffman node){
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		BitSink bitSnk = new BitSink(baos);
 		saveNodes(node, bitSnk);
-		return bitSnk;
+		return baos;
 	}
 	
 	private static void saveNodes(NodeHuffman node, BitSink bS){
@@ -22,25 +22,42 @@ public class SaveHuffManCode {
 	
 	public static NodeHuffman constructTreeHuffman (BitSource bitS){
 		NodeHuffman nd = new NodeHuffman();
-		constrTree(bitS, nd);
+		nd = constrTree(bitS);
 		return nd;
 	}
 
-	private static NodeHuffman constrTree(BitSource bitS, NodeHuffman nd) {
+//	private static NodeHuffman constrTree(BitSource bitS, NodeHuffman nd) {
+//		int c = bitS.read(1);
+//		if(c==-1)
+//			return nd;
+//		if(c == 0){
+//			nd.left = new NodeHuffman();
+//			nd = constrTree(bitS, nd.left);
+//		}
+//		if(c == 1){
+//			char ch = (char)bitS.read(8);
+//			nd.character = ch ;
+//			nd.isLeaf = true;
+//			return nd;
+//		}
+//		nd.right = new NodeHuffman();
+//		return nd = constrTree(bitS, nd.right);		
+//	}
+	
+	private static NodeHuffman constrTree(BitSource bitS) {
 		int c = bitS.read(1);
+		NodeHuffman nd = new NodeHuffman();
 		if(c==-1)
 			return nd;
 		if(c == 0){
-			nd.left = new NodeHuffman();
-			nd = constrTree(bitS, nd.left);
+			nd.left = constrTree(bitS);
+			nd.right = constrTree(bitS);
 		}
-		if(c == 1){
-			nd.character = (char) bitS.read(8);
-			nd.isLeaf = true;
-			return nd;
+		else if(c == 1){
+			char ch = (char)bitS.read(8);
+			nd.character = ch ;
+			nd.isLeaf = true;	
 		}
-		nd.right = new NodeHuffman();
-		return nd = constrTree(bitS, nd.right);		
+		return nd;
 	}
 }
-
