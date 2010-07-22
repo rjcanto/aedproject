@@ -1,6 +1,5 @@
 package main;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -110,7 +109,7 @@ public class HuffmanCode {
 		return list.right;
 	}
 
-	/* testar se é arvore de Huffman */
+	/* testar se ï¿½ arvore de Huffman */
 	public static boolean checkSiblingProp(NodeHuffman nh) {
 		NodeHuffman previous = null;
 		ArrayList<NodeHuffman> binList = new ArrayList<NodeHuffman>();
@@ -191,34 +190,5 @@ public class HuffmanCode {
 		PrintinOrder(root.right);
 	}
 	
-	public static void main(String[] args) {
-		byte[] a = new byte[10];
-		String s = "ola mundo!";
-		
-		for(int i=0; i<s.length(); ++i){
-			a[i] = (byte) s.charAt(i);
-		}
-		ByteArrayInputStream in = new ByteArrayInputStream(a);
-		
-		BitSource bitSrc = new BitSource(in);
-		PriorityQueue<NodeHuffman> pq = buildPriorityQueue(bitSrc);
-		
-		NodeHuffman node = huffman(pq);
-		System.out.println(checkSiblingProp(node));
-		PrintinOrder(node);
-		
-		CodHuffman[] cd = getListOfLeafs(node);
-		for (int j = 0; j < cd.length; ++j) {
-		if(cd[j]!=null)
-			System.out.println((char)j + " have:" + cd[j].bits + "bits and code:" + cd[j].code);
-		}
-		
-		System.out.println("bits: "+ getCode(node, 'o').bits);
-		System.out.println("codigo: "+getCode(node, 'o').code);
-		
-		CodHuffman cod = new CodHuffman();
-		cod.bits = 3;
-		cod.code = 0x1;
-		System.out.println(getSimbol (node, cod));
-	}
+
 }

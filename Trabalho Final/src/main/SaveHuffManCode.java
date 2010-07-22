@@ -6,6 +6,7 @@ public class SaveHuffManCode {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		BitSink bitSnk = new BitSink(baos);
 		saveNodes(node, bitSnk);
+	//	bitSnk.close();
 		return baos;
 	}
 	
@@ -25,24 +26,6 @@ public class SaveHuffManCode {
 		nd = constrTree(bitS);
 		return nd;
 	}
-
-//	private static NodeHuffman constrTree(BitSource bitS, NodeHuffman nd) {
-//		int c = bitS.read(1);
-//		if(c==-1)
-//			return nd;
-//		if(c == 0){
-//			nd.left = new NodeHuffman();
-//			nd = constrTree(bitS, nd.left);
-//		}
-//		if(c == 1){
-//			char ch = (char)bitS.read(8);
-//			nd.character = ch ;
-//			nd.isLeaf = true;
-//			return nd;
-//		}
-//		nd.right = new NodeHuffman();
-//		return nd = constrTree(bitS, nd.right);		
-//	}
 	
 	private static NodeHuffman constrTree(BitSource bitS) {
 		int c = bitS.read(1);
