@@ -1,6 +1,5 @@
 package main;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,11 +27,12 @@ public class HuffmanCompress {
 		//cria uma nova instancia de bitSource
 		bitSrc = new BitSource(in);
 		
-		//criaçao da árvore de codificaçao
+		//criaï¿½ao da ï¿½rvore de codificaï¿½ao
 		NodeHuffman node = HuffmanCode.huffman(pq);
 		
 		//guardar a arvore no ficheiro
 		baos = SaveHuffManCode.saveCode(node);
+		
 		bitSnk = new BitSink(baos);
 		
 		//guardar os caracteres
