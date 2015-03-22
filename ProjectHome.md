@@ -1,0 +1,1 @@
+Todo o código elaborado em AED. Series, exercícios.
